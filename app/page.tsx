@@ -1,3 +1,34 @@
+// // app/page.tsx
+// 'use client';
+
+// import { Button } from '@/components/ui/button'; // Import komponen Button dari Shadcn
+// import { useRouter } from 'next/navigation';
+// import { ROLES } from '@/constants/role'; // ROLES sudah didefinisikan sebelumnya
+
+// const Home = () => {
+//   const router = useRouter();
+
+//   const handleLogin = (role: 'admin' | 'pengelola') => {
+//     const roleid = role === 'admin' ? ROLES.ADMIN : ROLES.PENGELOLA;
+//     router.push(`/login?roleid=${roleid}`);
+//   };
+
+//   return (
+//     <div className="flex justify-center items-center min-h-screen">
+//       <div className="space-y-4">
+//         <Button onClick={() => handleLogin('admin')} className="w-full">
+//           Login as Admin
+//         </Button>
+//         <Button onClick={() => handleLogin('pengelola')} className="w-full">
+//           Login as Pengelola
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Home;
+
 import Image from "next/image";
 
 export default function Home() {
