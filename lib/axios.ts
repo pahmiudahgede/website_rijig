@@ -1,4 +1,3 @@
-// lib/axios.ts
 import axios from "axios";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
@@ -13,7 +12,6 @@ const api = axios.create({
   withCredentials: true
 });
 
-// Interceptor untuk menambahkan token pada setiap request
 api.interceptors.request.use(
   (config) => {
     const token =

@@ -149,3 +149,70 @@
     @apply bg-background text-foreground;
   }
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* HeroCards background shadow */
+.shadow {
+  position: absolute;
+  background: #BDE902; /* Ganti dengan warna yang Anda inginkan */
+  border-radius: 24px;
+  rotate: 35deg;
+  z-index: -1;
+  width: 260px;
+  top: 200px;
+  height: 400px;
+  filter: blur(150px);
+  will-change: transform;
+  animation: shadow-slide infinite 4s linear alternate;
+}
+
+@keyframes shadow-slide {
+  from {
+    background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+    right: 460px;
+  }
+  to {
+    background: rgba(189, 232, 2, 0.8); /* Menggunakan warna hijau dengan opacity yang lebih tinggi */
+    right: 160px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .shadow {
+    top: 70px;
+  }
+
+  @keyframes shadow-slide {
+    from {
+      background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+      right: 460px;
+    }
+    to {
+      background: rgba(189, 232, 2, 0.5); /* Menggunakan warna hijau dengan opacity lebih tinggi */
+      right: 160px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .shadow {
+    top: 70px;
+    width: 100px;
+    height: 350px;
+    filter: blur(60px);
+  }
+
+  @keyframes shadow-slide {
+    from {
+      background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+      right: 280px;
+    }
+    to {
+      background: rgba(189, 232, 2, 0.3); /* Menggunakan warna hijau dengan opacity lebih tinggi */
+      right: 100px;
+    }
+  }
+}
