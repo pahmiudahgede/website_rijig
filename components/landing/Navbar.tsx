@@ -15,10 +15,9 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { buttonVariants } from "@/components/ui/button";
+import { useAuthStore } from "@/store/authStore";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toogle";
-import { useRouter } from "next/navigation";
-import { ROLES } from "@/constants/role";
 import { LogoIcon } from "./Icons";
 
 interface RouteProps {
@@ -27,34 +26,16 @@ interface RouteProps {
 }
 
 const routeList: RouteProps[] = [
-  {
-    href: "#home",
-    label: "Beranda"
-  },
-  {
-    href: "#tentang",
-    label: "Tentang"
-  },
-  {
-    href: "#fitur",
-    label: "Fitur"
-  },
-  {
-    href: "#layanan",
-    label: "Layanan"
-  }
+  { href: "#home", label: "Beranda" },
+  { href: "#tentang", label: "Tentang" },
+  { href: "#fitur", label: "Fitur" },
+  { href: "#layanan", label: "Layanan" }
 ];
 
 export const Navbar = () => {
-  const router = useRouter();
-
-  const handleLogin = (role: "admin" | "pengelola") => {
-    const roleid = role === "admin" ? ROLES.ADMIN : ROLES.PENGELOLA;
-    router.push(`/login?roleid=${roleid}`);
-  };
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     setIsMounted(true);
@@ -67,7 +48,7 @@ export const Navbar = () => {
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
       <NavigationMenu className="mx-auto">
-        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between ">
+        <NavigationMenuList className="container h-14 px-4 w-screen flex justify-between">
           <NavigationMenuItem className="font-bold flex">
             <a
               rel="noreferrer noopener"
@@ -82,7 +63,6 @@ export const Navbar = () => {
           {/* mobile */}
           <span className="flex md:hidden">
             <ModeToggle />
-
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger className="px-2">
                 <Menu
@@ -111,22 +91,17 @@ export const Navbar = () => {
                       {label}
                     </a>
                   ))}
-                  <Button
-                    onClick={() => handleLogin("pengelola")}
-                    className="w-full"
-                  >
-                    Login
-                  </Button>
-                  {/* <a
+                  <a
                     rel="noreferrer noopener"
-                    href="#"
-                    target="_blank"
+                    href={isAuthenticated ? "/dashboard" : "#"}
+                    onClick={isAuthenticated ? undefined : () => {}}
+                    target={isAuthenticated ? "_self" : "_blank"}
                     className={`w-[110px] border ${buttonVariants({
                       variant: "secondary"
                     })}`}
                   >
-                    Login
-                  </a> */}
+                    {isAuthenticated ? "Dashboard" : "Login"}
+                  </a>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -149,18 +124,15 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
-            {/* <a
+            <a
               rel="noreferrer noopener"
-              href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-              target="_blank"
+              href={isAuthenticated ? "/dashboard" : "/login"}
+              onClick={isAuthenticated ? undefined : () => {}}
+              // target={isAuthenticated ? "_self" : "_blank"}
               className={`border ${buttonVariants({ variant: "secondary" })}`}
             >
-              Login
-            </a> */}
-            <Button onClick={() => handleLogin("pengelola")} className="w-full">
-              Login
-            </Button>
-
+              {isAuthenticated ? "Dashboard" : "Login"}
+            </a>
             <ModeToggle />
           </div>
         </NavigationMenuList>

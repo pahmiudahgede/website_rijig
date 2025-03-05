@@ -1,79 +1,60 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { loginUser, LoginRequest } from "@/services/authService";
 import { useAuthStore } from "@/store/authStore";
-import { LoginRequest } from "@/services/authService";
+import { ROLES } from "@/constants/role";
+import { LoginForm } from "@/components/login-form";
 
-const Login = () => {
-  const router = useRouter();
-  const { login, isAuthenticated } = useAuthStore();
+const LoginPage = () => {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
+  const { login } = useAuthStore();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/dashboard");
-    }
-  }, [isAuthenticated, router]);
-
-  const searchParams = useSearchParams();
-  const roleid = searchParams.get("roleid") as string;
-
-  const handleSubmit = async () => {
-    if (!identifier || !password) return;
-
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setLoading(true);
+    setErrorMessage("");
+
     const loginData: LoginRequest = {
-      roleid,
+      roleid: ROLES.ADMIN,
       identifier,
       password
     };
 
     try {
-      await login(loginData);
+      const response = await loginUser(loginData);
+      const { user_id, role_name, token } = response;
+
+      login(user_id, role_name, token);
+
       router.push("/dashboard");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (error: any) {
+      setErrorMessage(error.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="w-full max-w-md space-y-4">
-        <h2 className="text-center text-2xl font-semibold">Login</h2>
-        <div>
-          <label className="block mb-2">Identifier</label>
-          <Input
-            type="text"
-            placeholder="Enter identifier"
-            value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
-            className="w-full"
-          />
-        </div>
-        <div>
-          <label className="block mb-2">Password</label>
-          <Input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full"
-          />
-        </div>
-        <Button onClick={handleSubmit} className="w-full" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </Button>
+    <div className="flex min-h-svh flex-col items-center justify-center bg-muted p-6 md:p-10">
+      <div className="w-full max-w-sm md:max-w-3xl">
+        <LoginForm
+          className="space-y-4"
+          onSubmit={handleSubmit}
+          identifier={identifier}
+          setIdentifier={setIdentifier}
+          password={password}
+          setPassword={setPassword}
+          loading={loading}
+        />
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginPage;
