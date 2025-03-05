@@ -8,7 +8,7 @@ export const useAuthGuard = () => {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      router.push("/login"); 
+      router.push("/login");
     }
   }, [isAuthenticated, router]);
 };

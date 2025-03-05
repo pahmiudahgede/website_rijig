@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/mode-toogle";
 import { Navbar } from "@/components/landing/Navbar";
 import "./globals.css";
 
@@ -41,9 +40,6 @@ export default function RootLayout({
           <Navbar />
 
           <main className="flex flex-col gap-4 p-15 pt-0 w-full h-full">
-            {/* <div className="flex gap-3 items-center">
-              <ModeToggle />
-            </div> */}
             {children}
           </main>
         </ThemeProvider>

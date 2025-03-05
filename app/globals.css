@@ -154,10 +154,10 @@ html {
   scroll-behavior: smooth;
 }
 
-/* HeroCards background shadow */
+
 .shadow {
   position: absolute;
-  background: #BDE902; /* Ganti dengan warna yang Anda inginkan */
+  background: #BDE902;
   border-radius: 24px;
   rotate: 35deg;
   z-index: -1;
@@ -171,11 +171,11 @@ html {
 
 @keyframes shadow-slide {
   from {
-    background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+    background: rgba(189, 232, 2, 0.2); 
     right: 460px;
   }
   to {
-    background: rgba(189, 232, 2, 0.8); /* Menggunakan warna hijau dengan opacity yang lebih tinggi */
+    background: rgba(189, 232, 2, 0.8);
     right: 160px;
   }
 }
@@ -187,11 +187,11 @@ html {
 
   @keyframes shadow-slide {
     from {
-      background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+      background: rgba(189, 232, 2, 0.2); 
       right: 460px;
     }
     to {
-      background: rgba(189, 232, 2, 0.5); /* Menggunakan warna hijau dengan opacity lebih tinggi */
+      background: rgba(189, 232, 2, 0.5); 
       right: 160px;
     }
   }
@@ -207,11 +207,11 @@ html {
 
   @keyframes shadow-slide {
     from {
-      background: rgba(189, 232, 2, 0.2); /* Menggunakan warna hijau dengan opacity */
+      background: rgba(189, 232, 2, 0.2);
       right: 280px;
     }
     to {
-      background: rgba(189, 232, 2, 0.3); /* Menggunakan warna hijau dengan opacity lebih tinggi */
+      background: rgba(189, 232, 2, 0.3); 
       right: 100px;
     }
   }

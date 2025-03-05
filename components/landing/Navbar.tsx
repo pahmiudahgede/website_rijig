@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import {
   NavigationMenu,
@@ -16,6 +17,8 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toogle";
+import { useRouter } from "next/navigation";
+import { ROLES } from "@/constants/role";
 import { LogoIcon } from "./Icons";
 
 interface RouteProps {
@@ -33,7 +36,7 @@ const routeList: RouteProps[] = [
     label: "Tentang"
   },
   {
-    href: "#features",
+    href: "#fitur",
     label: "Fitur"
   },
   {
@@ -43,6 +46,13 @@ const routeList: RouteProps[] = [
 ];
 
 export const Navbar = () => {
+  const router = useRouter();
+
+  const handleLogin = (role: "admin" | "pengelola") => {
+    const roleid = role === "admin" ? ROLES.ADMIN : ROLES.PENGELOLA;
+    router.push(`/login?roleid=${roleid}`);
+  };
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -101,7 +111,13 @@ export const Navbar = () => {
                       {label}
                     </a>
                   ))}
-                  <a
+                  <Button
+                    onClick={() => handleLogin("pengelola")}
+                    className="w-full"
+                  >
+                    Login
+                  </Button>
+                  {/* <a
                     rel="noreferrer noopener"
                     href="#"
                     target="_blank"
@@ -110,7 +126,7 @@ export const Navbar = () => {
                     })}`}
                   >
                     Login
-                  </a>
+                  </a> */}
                 </nav>
               </SheetContent>
             </Sheet>
@@ -133,14 +149,17 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
-            <a
+            {/* <a
               rel="noreferrer noopener"
               href="https://github.com/leoMirandaa/shadcn-landing-page.git"
               target="_blank"
               className={`border ${buttonVariants({ variant: "secondary" })}`}
             >
               Login
-            </a>
+            </a> */}
+            <Button onClick={() => handleLogin("pengelola")} className="w-full">
+              Login
+            </Button>
 
             <ModeToggle />
           </div>

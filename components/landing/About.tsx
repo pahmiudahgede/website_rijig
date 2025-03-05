@@ -23,9 +23,9 @@ export const About = () => {
             <div className="pb-6">
               <h2 className="text-3xl md:text-4xl font-bold">
                 <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                  About{" "}
+                  Tentang{" "}
                 </span>
-                Company
+                Rijig
               </h2>
               <p className="text-xl text-muted-foreground mt-4">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do

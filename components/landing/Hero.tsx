@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
-import { HeroCards } from "./HeroCards";
 
 export const Hero = () => {
   return (
@@ -55,7 +53,14 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="z-10">{/* <HeroCards /> */}</div>
+      <div className="z-10">
+        {/* Gambar SVG menggunakan <img> */}
+        <img
+          src="/assets/Recycling 2.svg"
+          alt="Recycling illustration"
+          className="w-[300px] md:w-[500px] lg:w-[600px] object-contain"
+        />
+      </div>
 
       <div className="shadow"></div>
     </section>

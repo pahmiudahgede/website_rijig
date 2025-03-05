@@ -24,4 +24,16 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const message =
+      error?.response?.data?.meta?.message || "Unknown error occurred";
+    if (error?.response?.status === 401) {
+      window.location.href = "/login";
+    }
+    return Promise.reject(new Error(message));
+  }
+);
+
 export default api;

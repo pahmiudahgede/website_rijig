@@ -1,4 +1,3 @@
-// hooks/useAuth.ts
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,5 +29,12 @@ export const useAuth = () => {
     }
   };
 
-  return { userId, role, isAuthenticated, login, logout: handleLogout, loading };
+  return {
+    userId,
+    role,
+    isAuthenticated,
+    login,
+    logout: handleLogout,
+    loading
+  };
 };
