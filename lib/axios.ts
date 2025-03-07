@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -6,16 +6,16 @@ const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
-    "x-api-key": API_KEY
+    'Content-Type': 'application/json',
+    'x-api-key': API_KEY,
   },
-  withCredentials: true
+  withCredentials: true, // Menyertakan cookie dalam request
 });
 
+// Interceptor untuk request
 api.interceptors.request.use(
   (config) => {
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -24,13 +24,15 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Interceptor untuk response
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     const message =
-      error?.response?.data?.meta?.message || "Unknown error occurred";
+      error?.response?.data?.meta?.message || 'Unknown error occurred';
     if (error?.response?.status === 401) {
-      window.location.href = "/login";
+      // Arahkan pengguna ke halaman login jika statusnya 401 (Unauthorized)
+      window.location.href = '/login';
     }
     return Promise.reject(new Error(message));
   }

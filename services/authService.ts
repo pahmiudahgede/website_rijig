@@ -1,4 +1,4 @@
-import api from "@/lib/axios";
+import api from '@/lib/axios';
 
 export interface LoginRequest {
   roleid: string;
@@ -14,24 +14,24 @@ export interface LoginResponse {
 
 export const loginUser = async (data: LoginRequest): Promise<LoginResponse> => {
   try {
-    const response = await api.post("/login", data);
+    const response = await api.post('/login', data);
 
     if (response?.data?.meta?.status === 200 && response?.data?.data) {
       return response.data.data;
     }
 
-    throw new Error(response?.data?.meta?.message || "Login failed");
+    throw new Error(response?.data?.meta?.message || 'Login failed');
   } catch (error: any) {
-    console.error("Login error response:", error?.response);
+    console.error('Login error response:', error?.response);
 
     const message =
       error?.response?.data?.meta?.message ||
       error?.response?.data?.message ||
       error?.message ||
-      "Login request failed";
+      'Login request failed';
 
     if (error?.response?.status === 500) {
-      throw new Error("Server error. Please try again later.");
+      throw new Error('Server error. Please try again later.');
     }
 
     throw new Error(message);

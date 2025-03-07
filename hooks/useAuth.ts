@@ -1,7 +1,9 @@
-import { useAuthStore } from "@/store/authStore";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import api from "@/lib/axios";
+"use client";
+
+import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import api from '@/lib/axios';
 
 export const useAuth = () => {
   const { userId, role, isAuthenticated, login, logout } = useAuthStore();
@@ -9,21 +11,22 @@ export const useAuth = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
+    // Redirect user jika tidak terautentikasi
     if (isAuthenticated) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     } else {
-      router.push("/login");
+      router.push('/login');
     }
   }, [isAuthenticated, router]);
 
   const handleLogout = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      await api.post("/logout");
-      logout();
-      router.push("/login");
+      await api.post('/logout'); // Menangani logout melalui API
+      logout(); // Logout di store
+      router.push('/login'); // Arahkan ke halaman login
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error('Logout failed', error);
     } finally {
       setLoading(false);
     }
@@ -35,6 +38,6 @@ export const useAuth = () => {
     isAuthenticated,
     login,
     logout: handleLogout,
-    loading
+    loading,
   };
 };
