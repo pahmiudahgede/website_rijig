@@ -1,43 +1,76 @@
-"use client";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import api from '@/lib/axios';
+interface UseAuthOptions {
+  requireAuth?: boolean;
+  requireRole?: "administrator" | "pengelola";
+  requireFullToken?: boolean;
+  redirectTo?: string;
+  middleware?: (user: any) => boolean;
+}
 
-export const useAuth = () => {
-  const { userId, role, isAuthenticated, login, logout } = useAuthStore();
+export const useAuth = (options: UseAuthOptions = {}) => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const { user, logout, isLoading, error, clearError, isInitialized } =
+    useAuthStore();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Redirect user jika tidak terautentikasi
-    if (isAuthenticated) {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
-  }, [isAuthenticated, router]);
+    if (!isInitialized) return;
 
-  const handleLogout = async () => {
-    setLoading(true);
-    try {
-      await api.post('/logout'); // Menangani logout melalui API
-      logout(); // Logout di store
-      router.push('/login'); // Arahkan ke halaman login
-    } catch (error) {
-      console.error('Logout failed', error);
-    } finally {
-      setLoading(false);
+    setIsReady(true);
+
+    if (!options.requireAuth) return;
+
+    if (!user) {
+      const redirectPath =
+        options.redirectTo ||
+        (options.requireRole === "administrator"
+          ? "/sys-rijig-adminpanel/login"
+          : "/pengelola/login");
+      router.push(redirectPath);
+      return;
     }
-  };
+
+    if (options.requireRole && user.role !== options.requireRole) {
+      router.push("/");
+      return;
+    }
+
+    if (options.middleware && !options.middleware(user)) {
+      router.push("/");
+      return;
+    }
+
+    if (
+      options.requireFullToken &&
+      user.role === "pengelola" &&
+      user.token_type !== "full"
+    ) {
+      switch (user.registration_status) {
+        case "uncomplete":
+          router.push("/pengelola/company");
+          break;
+        case "awaiting_approval":
+          router.push("/pengelola/approval");
+          break;
+        case "approved":
+          router.push("/pengelola/pin");
+          break;
+        default:
+          router.push("/pengelola/register");
+      }
+    }
+  }, [user, options, router, isInitialized]);
 
   return {
-    userId,
-    role,
-    isAuthenticated,
-    login,
-    logout: handleLogout,
-    loading,
+    user,
+    isAuthenticated: !!user,
+    isLoading,
+    error,
+    isReady,
+    logout,
+    clearError
   };
 };

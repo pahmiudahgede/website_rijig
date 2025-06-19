@@ -1,6 +1,4 @@
-// components/landing/ScrollToTop.tsx
-
-"use client"; // Menambahkan directive ini untuk memastikan komponen ini dijalankan di sisi klien
+"use client";
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";

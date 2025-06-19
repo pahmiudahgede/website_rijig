@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -15,7 +15,6 @@ import {
   SheetTrigger
 } from "@/components/ui/sheet";
 import { buttonVariants } from "@/components/ui/button";
-import { useAuthStore } from "@/store/authStore";
 import { Menu } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toogle";
 import { LogoIcon } from "./Icons";
@@ -34,16 +33,6 @@ const routeList: RouteProps[] = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const { isAuthenticated } = useAuthStore();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
@@ -60,7 +49,6 @@ export const Navbar = () => {
             </a>
           </NavigationMenuItem>
 
-          {/* mobile */}
           <span className="flex md:hidden">
             <ModeToggle />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -91,23 +79,12 @@ export const Navbar = () => {
                       {label}
                     </a>
                   ))}
-                  <a
-                    rel="noreferrer noopener"
-                    href={isAuthenticated ? "/dashboard" : "#"}
-                    onClick={isAuthenticated ? undefined : () => {}}
-                    target={isAuthenticated ? "_self" : "_blank"}
-                    className={`w-[110px] border ${buttonVariants({
-                      variant: "secondary"
-                    })}`}
-                  >
-                    {isAuthenticated ? "Dashboard" : "Login"}
-                  </a>
+                  <Button>Masuk</Button>
                 </nav>
               </SheetContent>
             </Sheet>
           </span>
 
-          {/* desktop */}
           <nav className="hidden md:flex gap-2">
             {routeList.map((route: RouteProps, i) => (
               <a
@@ -124,15 +101,7 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
-            <a
-              rel="noreferrer noopener"
-              href={isAuthenticated ? "/dashboard" : "/login"}
-              onClick={isAuthenticated ? undefined : () => {}}
-              // target={isAuthenticated ? "_self" : "_blank"}
-              className={`border ${buttonVariants({ variant: "secondary" })}`}
-            >
-              {isAuthenticated ? "Dashboard" : "Login"}
-            </a>
+            <Button>Masuk</Button>
             <ModeToggle />
           </div>
         </NavigationMenuList>
