@@ -11,7 +11,7 @@ import { useTheme } from "next-themes";
 import { Moon, Sun, Monitor } from "lucide-react";
 
 export function ModeToggle() {
-  const { setTheme, theme } = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <DropdownMenu>

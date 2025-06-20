@@ -1,5 +1,10 @@
-import LandingPageShow from "./(landingpage)/page";
+import LandingLayout from "./(landingpage)/layout";
+import LandingContent from "./(landingpage)/page";
 
 export default function HomePage() {
-  return <LandingPageShow />;
+  return (
+    <LandingLayout>
+      <LandingContent />
+    </LandingLayout>
+  );
 }
