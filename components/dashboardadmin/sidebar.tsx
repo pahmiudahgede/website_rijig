@@ -2,7 +2,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useState, useMemo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -40,6 +41,7 @@ import {
   ChevronDown,
   X
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -264,9 +266,23 @@ function MenuItemComponent({
   isCollapsed: boolean;
   isHovered: boolean;
 }) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const hasChildren = item.children && item.children.length > 0;
   const showText = !isCollapsed || isHovered;
+
+  // Check if any child is active
+  const isChildActive = useMemo(() => {
+    if (!hasChildren) return false;
+    return item.children!.some(child => child.href === pathname);
+  }, [hasChildren, item.children, pathname]);
+
+  // Auto open if child is active
+  useMemo(() => {
+    if (isChildActive && !isOpen) {
+      setIsOpen(true);
+    }
+  }, [isChildActive, isOpen]);
 
   // For collapsed state without hover, show tooltip
   if (isCollapsed && !isHovered) {
@@ -277,13 +293,28 @@ function MenuItemComponent({
             <TooltipTrigger asChild>
               <Button
                 variant="ghost"
-                className="w-full h-12 p-0 justify-center text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className={cn(
+                  "w-full h-12 p-0 justify-center transition-colors",
+                  isChildActive && "bg-green-100 dark:bg-green-900/30"
+                )}
                 asChild={!hasChildren}
               >
                 {hasChildren ? (
-                  <div>{item.icon}</div>
+                  <div className={cn(
+                    "text-gray-700 dark:text-gray-300",
+                    isChildActive && "text-green-700 dark:text-green-400"
+                  )}>
+                    {item.icon}
+                  </div>
                 ) : (
-                  <Link href={item.href || "#"}>{item.icon}</Link>
+                  <Link href={item.href || "#"}>
+                    <div className={cn(
+                      "text-gray-700 dark:text-gray-300",
+                      pathname === item.href && "text-green-700 dark:text-green-400"
+                    )}>
+                      {item.icon}
+                    </div>
+                  </Link>
                 )}
               </Button>
             </TooltipTrigger>
@@ -303,54 +334,82 @@ function MenuItemComponent({
           <CollapsibleTrigger asChild>
             <Button
               variant="ghost"
-              className="w-full justify-between px-3 py-2.5 h-auto text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              className={cn(
+                "w-full justify-between px-3 py-2.5 h-auto transition-colors",
+                "hover:bg-gray-100 dark:hover:bg-gray-800",
+                isChildActive && "bg-green-50 text-green-700 hover:bg-green-100 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30"
+              )}
             >
               <div className="flex items-center gap-3">
-                {item.icon}
+                <span className={cn(
+                  "transition-colors",
+                  isChildActive ? "text-green-600 dark:text-green-400" : "text-gray-700 dark:text-gray-300"
+                )}>
+                  {item.icon}
+                </span>
                 {showText && (
-                  <span className="text-sm font-medium">{item.title}</span>
+                  <span className={cn(
+                    "text-sm font-medium",
+                    isChildActive && "text-green-700 dark:text-green-400"
+                  )}>
+                    {item.title}
+                  </span>
                 )}
               </div>
               {showText && (
                 <ChevronDown
-                  className={`h-4 w-4 transition-transform ${
-                    isOpen ? "rotate-180" : ""
-                  }`}
+                  className={cn(
+                    "h-4 w-4 transition-transform",
+                    isOpen && "rotate-180",
+                    isChildActive && "text-green-600 dark:text-green-400"
+                  )}
                 />
               )}
             </Button>
           </CollapsibleTrigger>
           {showText && (
             <CollapsibleContent className="ml-8 mt-1 space-y-1">
-              {item.children?.map((child, childIndex) => (
-                <Link
-                  key={childIndex}
-                  href={child.href || "#"}
-                  className="flex items-center justify-between px-3 py-2 text-sm text-gray-600 rounded-md hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
-                >
-                  <span>{child.title}</span>
-                  {child.badge && (
-                    <Badge
-                      variant={
-                        child.badge === "urgent"
-                          ? "destructive"
-                          : child.badge === "pro"
-                          ? "secondary"
-                          : "default"
-                      }
-                      className={`text-xs ${
-                        child.badge === "urgent"
-                          ? "bg-red-100 text-red-700 hover:bg-red-200"
-                          : child.badge === "new"
-                          ? "bg-green-100 text-green-700 hover:bg-green-200"
-                          : ""
-                      }`}
-                    >
-                      {child.badge}
-                    </Badge>
-                  )}
-                </Link>
-              ))}
+              {item.children?.map((child, childIndex) => {
+                const isActive = pathname === child.href;
+                return (
+                  <Link
+                    key={childIndex}
+                    href={child.href || "#"}
+                    className={cn(
+                      "flex items-center justify-between px-3 py-2 text-sm rounded-md transition-colors",
+                      "hover:bg-gray-100 dark:hover:bg-gray-800",
+                      isActive 
+                        ? "bg-green-100 text-green-700 font-medium hover:bg-green-200 dark:bg-green-900/40 dark:text-green-400 dark:hover:bg-green-900/50" 
+                        : "text-gray-600 dark:text-gray-400"
+                    )}
+                  >
+                    <span className="flex items-center gap-2">
+                      {isActive && (
+                        <div className="w-1 h-4 bg-green-600 rounded-full" />
+                      )}
+                      {child.title}
+                    </span>
+                    {child.badge && (
+                      <Badge
+                        variant={
+                          child.badge === "urgent"
+                            ? "destructive"
+                            : child.badge === "pro"
+                            ? "secondary"
+                            : "default"
+                        }
+                        className={cn(
+                          "text-xs",
+                          child.badge === "urgent" && "bg-red-100 text-red-700 hover:bg-red-200",
+                          child.badge === "new" && "bg-green-100 text-green-700 hover:bg-green-200"
+                        )}
+                      >
+                        {child.badge}
+                      </Badge>
+                    )}
+                  </Link>
+                );
+              })}
             </CollapsibleContent>
           )}
         </Collapsible>
@@ -358,18 +417,35 @@ function MenuItemComponent({
     );
   }
 
+  // Single menu item (no children)
+  const isActive = pathname === item.href;
+  
   return (
     <li>
       <Button
         asChild
         variant="ghost"
-        className="w-full justify-start px-3 py-2.5 h-auto text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+        className={cn(
+          "w-full justify-start px-3 py-2.5 h-auto transition-colors",
+          "hover:bg-gray-100 dark:hover:bg-gray-800",
+          isActive && "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-400 dark:hover:bg-green-900/50"
+        )}
       >
         <Link href={item.href || "#"}>
           <div className="flex items-center gap-3">
-            {item.icon}
+            <span className={cn(
+              "transition-colors",
+              isActive ? "text-green-600 dark:text-green-400" : "text-gray-700 dark:text-gray-300"
+            )}>
+              {item.icon}
+            </span>
             {showText && (
-              <span className="text-sm font-medium">{item.title}</span>
+              <span className={cn(
+                "text-sm font-medium",
+                isActive && "text-green-700 dark:text-green-400"
+              )}>
+                {item.title}
+              </span>
             )}
           </div>
         </Link>
@@ -392,15 +468,14 @@ export function AdminSidebar({
 
   return (
     <aside
-      className={`
-        fixed top-0 left-0 z-50 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 
-        transition-all duration-300 ease-in-out
-        ${
-          isMobile
-            ? `w-72 ${isOpen ? "translate-x-0" : "-translate-x-full"}`
-            : `${sidebarWidth} translate-x-0`
-        }
-      `}
+      className={cn(
+        "fixed top-0 left-0 z-50 h-full bg-white dark:bg-gray-900",
+        "border-r border-gray-200 dark:border-gray-800",
+        "transition-all duration-300 ease-in-out",
+        isMobile
+          ? cn("w-72", isOpen ? "translate-x-0" : "-translate-x-full")
+          : cn(sidebarWidth, "translate-x-0")
+      )}
       onMouseEnter={!isMobile ? onMouseEnter : undefined}
       onMouseLeave={!isMobile ? onMouseLeave : undefined}
     >

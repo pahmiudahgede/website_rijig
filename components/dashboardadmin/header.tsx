@@ -1,51 +1,53 @@
-// components/admin/header.tsx
-"use client"
+"use client";
 
-import { useState } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
+import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from '@/components/ui/sheet'
-import { 
-  Menu, 
-  Search, 
-  Bell, 
-  Sun, 
-  Moon, 
-  User, 
-  Settings, 
+  Menu,
+  Search,
+  Bell,
+  Sun,
+  Moon,
+  User,
+  Settings,
   LogOut,
   ChevronDown,
   MoreHorizontal,
   PanelLeftClose,
   PanelLeft
-} from 'lucide-react'
+} from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
 
 interface AdminHeaderProps {
-  onMenuClick: () => void
-  sidebarCollapsed: boolean
-  isMobile: boolean
+  onMenuClick: () => void;
+  sidebarCollapsed: boolean;
+  isMobile: boolean;
 }
 
-export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHeaderProps) {
-  const [isDark, setIsDark] = useState(false)
+export function AdminHeader({
+  onMenuClick,
+  sidebarCollapsed,
+  isMobile
+}: AdminHeaderProps) {
+  const [isDark, setIsDark] = useState(false);
 
   const toggleTheme = () => {
-    setIsDark(!isDark)
-    document.documentElement.classList.toggle('dark')
-  }
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle("dark");
+  };
+
+  const { logout } = useAuthStore();
 
   return (
     <header className="sticky top-0 flex w-full bg-white border-b border-gray-200 z-40 dark:border-gray-800 dark:bg-gray-900">
@@ -91,9 +93,17 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
                     3
                   </Badge>
                 </Button>
-                <Button className="w-full" variant="outline" onClick={toggleTheme}>
-                  {isDark ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}
-                  {isDark ? 'Light Mode' : 'Dark Mode'}
+                <Button
+                  className="w-full"
+                  variant="outline"
+                  onClick={toggleTheme}
+                >
+                  {isDark ? (
+                    <Sun className="mr-2 h-4 w-4" />
+                  ) : (
+                    <Moon className="mr-2 h-4 w-4" />
+                  )}
+                  {isDark ? "Light Mode" : "Dark Mode"}
                 </Button>
               </div>
             </SheetContent>
@@ -121,26 +131,30 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
         <div className="hidden items-center justify-between w-full gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0">
           <div className="flex items-center gap-3">
             {/* Theme toggle */}
-            <Button 
-              variant="outline" 
-              size="icon" 
+            <Button
+              variant="outline"
+              size="icon"
               onClick={toggleTheme}
               className="hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {isDark ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
             </Button>
 
             {/* Notifications */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="icon" 
+                <Button
+                  variant="outline"
+                  size="icon"
                   className="relative hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <Bell className="h-4 w-4" />
-                  <Badge 
-                    variant="destructive" 
+                  <Badge
+                    variant="destructive"
                     className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs flex items-center justify-center animate-pulse"
                   >
                     3
@@ -151,19 +165,29 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
                 <div className="p-4">
                   <h4 className="font-semibold mb-2 flex items-center justify-between">
                     Notifications
-                    <Badge variant="secondary" className="text-xs">3 new</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      3 new
+                    </Badge>
                   </h4>
                   <div className="space-y-2">
                     <div className="text-sm text-gray-600 dark:text-gray-400 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border-l-4 border-blue-500">
-                      <p className="font-medium text-gray-900 dark:text-white">New user registered</p>
-                      <p className="text-xs text-gray-500 mt-1">2 minutes ago</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
+                        New user registered
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        2 minutes ago
+                      </p>
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border-l-4 border-green-500">
-                      <p className="font-medium text-gray-900 dark:text-white">System update available</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
+                        System update available
+                      </p>
                       <p className="text-xs text-gray-500 mt-1">1 hour ago</p>
                     </div>
                     <div className="text-sm text-gray-600 dark:text-gray-400 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border-l-4 border-orange-500">
-                      <p className="font-medium text-gray-900 dark:text-white">New message received</p>
+                      <p className="font-medium text-gray-900 dark:text-white">
+                        New message received
+                      </p>
                       <p className="text-xs text-gray-500 mt-1">3 hours ago</p>
                     </div>
                   </div>
@@ -177,15 +201,24 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
             {/* User menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-auto p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                <Button
+                  variant="ghost"
+                  className="h-auto p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
                   <div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8">
                       <AvatarImage src="/avatars/user.jpg" alt="User" />
-                      <AvatarFallback className="bg-blue-600 text-white">MU</AvatarFallback>
+                      <AvatarFallback className="bg-blue-600 text-white">
+                        MU
+                      </AvatarFallback>
                     </Avatar>
                     <div className="hidden sm:block text-left">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">Musharof</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Administrator</div>
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        Musharof
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Administrator
+                      </div>
                     </div>
                     <ChevronDown className="h-4 w-4 text-gray-500" />
                   </div>
@@ -194,7 +227,9 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
               <DropdownMenuContent align="end" className="w-56">
                 <div className="px-2 py-1.5 text-sm text-gray-700 dark:text-gray-300">
                   <div className="font-medium">Musharof</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">admin@example.com</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                    admin@example.com
+                  </div>
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer">
@@ -207,7 +242,7 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="text-red-600 dark:text-red-400 cursor-pointer">
-                  <LogOut className="mr-2 h-4 w-4" />
+                  <LogOut className="mr-2 h-4 w-4" onClick={logout} />
                   Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -216,5 +251,5 @@ export function AdminHeader({ onMenuClick, sidebarCollapsed, isMobile }: AdminHe
         </div>
       </div>
     </header>
-  )
+  );
 }
