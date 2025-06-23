@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { ModeToggle } from "@/components/mode-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,10 +43,10 @@ export function AdminHeader({
 }: AdminHeaderProps) {
   const [isDark, setIsDark] = useState(false);
 
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    document.documentElement.classList.toggle("dark");
-  };
+  // const toggleTheme = () => {
+  //   setIsDark(!isDark);
+  //   document.documentElement.classList.toggle("dark");
+  // };
 
   const { logout } = useAuthStore();
 
@@ -93,7 +94,9 @@ export function AdminHeader({
                     3
                   </Badge>
                 </Button>
-                <Button
+                <ModeToggle />
+
+                {/* <Button
                   className="w-full"
                   variant="outline"
                   onClick={toggleTheme}
@@ -104,13 +107,13 @@ export function AdminHeader({
                     <Moon className="mr-2 h-4 w-4" />
                   )}
                   {isDark ? "Light Mode" : "Dark Mode"}
-                </Button>
+                </Button> */}
               </div>
             </SheetContent>
           </Sheet>
 
           {/* Desktop search */}
-          <div className="hidden lg:block">
+          {/* <div className="hidden lg:block">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
               <Input
@@ -124,14 +127,15 @@ export function AdminHeader({
                 </kbd>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Desktop header actions */}
         <div className="hidden items-center justify-between w-full gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0">
           <div className="flex items-center gap-3">
             {/* Theme toggle */}
-            <Button
+            <ModeToggle />
+            {/* <Button
               variant="outline"
               size="icon"
               onClick={toggleTheme}
@@ -142,7 +146,7 @@ export function AdminHeader({
               ) : (
                 <Moon className="h-4 w-4" />
               )}
-            </Button>
+            </Button> */}
 
             {/* Notifications */}
             <DropdownMenu>

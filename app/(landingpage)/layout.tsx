@@ -176,7 +176,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
 
             {/* Right Side Actions */}
             <div className="hidden lg:flex items-center space-x-4">
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="icon"
                 aria-label="Search"
@@ -188,7 +188,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
                   }`}
               >
                 <Search className="h-4 w-4" />
-              </Button>
+              </Button> */}
               <ModeToggle />
               <Button className="bg-green-600 hover:bg-green-700 text-white shadow-lg">
                 Get Started!
@@ -246,9 +246,9 @@ const LandingLayout = ({ children }: LayoutProps) => {
               {/* Mobile Actions */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <Button variant="ghost" size="icon" aria-label="Search">
+                  {/* <Button variant="ghost" size="icon" aria-label="Search">
                     <Search className="h-4 w-4" />
-                  </Button>
+                  </Button> */}
                   <ModeToggle />
                 </div>
                 <Button
@@ -281,7 +281,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
 
       {/* Footer */}
       <footer className="bg-green-50 dark:bg-gray-800">
-        <div className="container mx-auto max-w-[1390px] px-4 py-16">
+        <div className="container mx-auto max-w-[1390px] px-4 py-8">
           <div className="grid lg:grid-cols-12 gap-8">
             <div className="lg:col-span-5">
               <div className="mb-8">
@@ -301,7 +301,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
               </div>
             </div>
 
-            <div className="lg:col-span-7">
+            {/* <div className="lg:col-span-7">
               <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
                   <h3 className="text-xl font-medium text-black dark:text-white mb-6">
@@ -460,7 +460,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -468,7 +468,7 @@ const LandingLayout = ({ children }: LayoutProps) => {
           <div className="container mx-auto max-w-[1390px] px-4">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-white text-center md:text-left mb-4 md:mb-0">
-                © 2025 Rijig. Semua hak cipta dilindungi undang-undang
+                © 2025 Rijig.
               </p>
 
               <div className="flex items-center space-x-6">
