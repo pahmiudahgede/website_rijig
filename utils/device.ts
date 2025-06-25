@@ -53,3 +53,16 @@ export const getOrCreateDeviceId = (): string => {
 
   return newId;
 };
+
+export function getDeviceId(): string {
+  if (typeof window === 'undefined') return generateDeviceId();
+  
+  let deviceId = localStorage.getItem('device_id');
+  
+  if (!deviceId) {
+    deviceId = generateDeviceId();
+    localStorage.setItem('device_id', deviceId);
+  }
+  
+  return deviceId;
+}
