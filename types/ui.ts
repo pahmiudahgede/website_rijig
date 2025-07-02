@@ -1,7 +1,4 @@
-// types/ui.ts
-
-// Toast notification types
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = "success" | "error" | "warning" | "info";
 
 export interface ToastMessage {
   id: string;
@@ -15,11 +12,9 @@ export interface ToastMessage {
   };
 }
 
-// Loading spinner types
-export type SpinnerSize = 'sm' | 'md' | 'lg';
-export type SpinnerVariant = 'primary' | 'secondary' | 'white';
+export type SpinnerSize = "sm" | "md" | "lg";
+export type SpinnerVariant = "primary" | "secondary" | "white";
 
-// Form error types
 export interface FormFieldError {
   field: string;
   message: string;
@@ -31,7 +26,6 @@ export interface FormErrorDisplayProps {
   className?: string;
 }
 
-// API error types
 export interface ApiError {
   message: string;
   status?: number;
@@ -39,7 +33,6 @@ export interface ApiError {
   details?: any;
 }
 
-// Loading state types
 export interface LoadingStateProps {
   isLoading: boolean;
   loadingText?: string;

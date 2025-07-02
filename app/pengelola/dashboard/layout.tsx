@@ -1,4 +1,4 @@
-import { AdminLayoutWrapper } from "@/components/dashboardadmin/layout-wrapper";
+import { PengelolaLayoutWrapper } from "@/components/dashboardpengelola/layout-wrapper";
 import ProgressBarProvider from "@/components/ProgressBarProvider";
 
 export default function PengelolaLayout({
@@ -8,7 +8,7 @@ export default function PengelolaLayout({
 }) {
  return (
     <ProgressBarProvider>
-      <AdminLayoutWrapper>{children}</AdminLayoutWrapper>
+      <PengelolaLayoutWrapper>{children}</PengelolaLayoutWrapper>
     </ProgressBarProvider>
   );
 }

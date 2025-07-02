@@ -1,9 +1,12 @@
-// components/providers/auth-provider.tsx
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useAuthStore } from '@/store';
-import { initializeAuthSync, syncCurrentAuthState } from '@/utils/auth-sync';
+import { useEffect, useState } from "react";
+import { useAuthStore } from "@/store";
+import {
+  initializeAuthSync,
+  syncCurrentAuthState,
+  debugAuthState
+} from "@/utils/auth-sync";
 
 interface AuthProviderProps {
   children: React.ReactNode;
@@ -15,19 +18,48 @@ interface AuthProviderProps {
  */
 export function AuthProvider({ children }: AuthProviderProps) {
   const { initializeAuth, isInitialized } = useAuthStore();
+  const [authSyncInitialized, setAuthSyncInitialized] = useState(false);
 
   useEffect(() => {
     if (!isInitialized) {
-      // Initialize auth state from localStorage
+      console.log("🔄 Initializing auth state...");
+
       initializeAuth();
-      
-      // Initialize auth sync between localStorage and cookies
-      initializeAuthSync();
-      
-      // Sync current state to cookies for middleware
-      syncCurrentAuthState();
     }
   }, [initializeAuth, isInitialized]);
+
+  useEffect(() => {
+    if (isInitialized && !authSyncInitialized) {
+      console.log("🔄 Initializing auth sync...");
+
+      initializeAuthSync();
+
+      syncCurrentAuthState();
+
+      if (process.env.NODE_ENV === "development") {
+        setTimeout(() => {
+          debugAuthState();
+        }, 100);
+      }
+
+      setAuthSyncInitialized(true);
+    }
+  }, [isInitialized, authSyncInitialized]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && isInitialized) {
+        console.log("👁️ Tab visible, syncing auth state...");
+        syncCurrentAuthState();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isInitialized]);
 
   return <>{children}</>;
 }

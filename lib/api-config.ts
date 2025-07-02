@@ -1,4 +1,3 @@
-// lib/api-config.ts
 import axios from 'axios';
 
 // Create axios instance
@@ -7,22 +6,19 @@ export const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'X-API-Key': process.env.NEXT_PUBLIC_API_KEY,
-    'ngrok-skip-browser-warning': 'true', // Skip ngrok browser warning
+    'ngrok-skip-browser-warning': 'true',
   },
-  timeout: 10000, // 10 seconds timeout
+  // timeout: 10000,
 });
 
-// Request interceptor untuk menambahkan token
 apiClient.interceptors.request.use(
   (config) => {
-    // Get token from localStorage or zustand store
     const token = typeof window !== 'undefined' ? localStorage.getItem('access_token') : null;
     
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     
-    // Always include ngrok skip header
     config.headers['ngrok-skip-browser-warning'] = 'true';
     
     return config;

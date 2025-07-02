@@ -4,8 +4,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import { Providers } from "./provider";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthProvider } from '@/components/providers/auth-provider';
-import { ToastProvider } from '@/components/ui/error';
+import { AuthProvider } from "@/components/providers/auth-provider";
+import { ToastProvider } from "@/components/ui/error";
+import ProgressBarProvider from "@/components/ProgressBarProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -40,9 +41,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ToastProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </ToastProvider>
+          <ProgressBarProvider>
+            <ToastProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </ToastProvider>
+          </ProgressBarProvider>
         </ThemeProvider>
       </body>
     </html>
